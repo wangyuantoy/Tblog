@@ -13,7 +13,8 @@
             </div>
             <div class="media-body">
                 <h4 class="media-heading"><%= article.title%></h4>
-                <p><%= article.content%></p>
+                <p><%- article.content%></p>
+                <img src="<%=article.img%>" style="width: 100px; height: 100px;" alt="">
             </div>
         </li>
         <%

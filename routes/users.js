@@ -12,8 +12,8 @@ router.get('/reg', validate.checkNotLogin, function (req, res) {
 //提交用户注册的表单
 router.post('/reg', validate.checkNotLogin, function (req, res) {
     var user = req.body;
+    user.avatar = 'http://secure.gravatar.com/avatar'; //正式注册用户如果有avatar图片则加上 '+ md5(user.email)';
     user.password=md5(user.password);
-    user.avatar = 'http://secure.gravatar.com/avatar' + md5(user.email);
     userModel.create(user, function (err, doc) {
         if (err) {
             req.flash('error', err);
@@ -49,9 +49,10 @@ router.post('/reg', validate.checkNotLogin, function (req, res) {
 router.get('/login', validate.checkNotLogin, function (req, res) {
     res.render('user/login')
 });
-//提交用户注册的表单
+//提交用户登录的表单
 router.post('/login', validate.checkNotLogin, function (req, res) {
     var user = req.body;
+    user.password=md5(user.password);
     userModel.findOne(user,function (err, user) {
         if (err) {
             req.flash('error', err);
