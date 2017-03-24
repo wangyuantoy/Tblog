@@ -1,5 +1,5 @@
 var mongoose=require('mongoose');
-
+mongoose.Promise = global.Promise;
 //var db=mongoose.connect('mongodb://127.0.0.1:27017/20170313log');
 var articleSchema=new mongoose.Schema({
     title:String,
