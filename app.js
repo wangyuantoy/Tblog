@@ -1,5 +1,4 @@
 const express = require('express');
-const fs=require('fs');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
