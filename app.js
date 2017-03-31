@@ -34,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function (req, res, next) {
     //res.locals 是真正的渲染模板的
     res.locals.user = req.session.user;
+    res.locals.keyword=req.session.keyword;
     //flash取出来是数组
     res.locals.success = req.flash('success').toString();
     res.locals.error = req.flash('error').toString();
@@ -55,7 +56,6 @@ app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
     // render the error page
     res.status(err.status || 500);
     res.render('error');

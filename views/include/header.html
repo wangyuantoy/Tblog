@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Tblog</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="../public/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/bootstrap.css">
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -35,6 +35,12 @@
                 }
                 %>
             </ul>
+            <form  class="navbar-form navbar-right" role="search" method="get" action="/?keyword=<%=keyword%>&pageNum=<%=pageNum%>&pageSize=<%=pageSize%>">
+                <div class="form-group">
+                    <input type="text" name="keyword" id="keyword" class="form-control" value="<%=keyword%>" placeholder="请输入关键字"/>
+                </div>
+                <input type="submit" class="btn  btn-default" value="提交" name="search">搜索</input>
+            </form>
         </div>
     </div>
 </nav>
