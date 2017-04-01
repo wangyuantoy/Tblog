@@ -10,27 +10,32 @@ router.get('/', function (req, res, next) {
     //查询出来的user是ID，需要通过populate转成对象
     var keyword = req.query.keyword;
     var search = req.query.search;
-    var pageNum = req.query.pageNum || 1;
-    var pageSize = req.query.pageSize || 2;
+    var pageNum = req.query.pageNum && req.query.pageNum > 0 ? parseInt(req.query.pageNum) : 1;
+    var pageSize = req.query.pageSize && req.query.pageSize > 0 ? parseInt(req.query.pageSize) : 2;
     var queryObj = {};
     if (search) { // 如果search有值，是通过提交按钮搜索
         req.session.keyword = keyword;
     }
-    keyword = req.session.keyword;
     var reg = new RegExp(keyword, "i");
+
     //内容或者标题只要一个里面包含查询关键字就可以
-    queryObj = {"$or": [{"title": reg}, {"content": reg}]};
+    queryObj = {$or: [{title: reg}, {content: reg}]};
     articleModel.find(queryObj).skip((pageNum - 1) * pageSize).limit(pageSize).populate('user').exec(function (err, articles) {
+        if (err) {
+            console.log(err)
+        }
+        //遍历发表的文章，把内容是markdown格式的转换为html格式
+        articles.forEach(function (article) {
+            article.content = markdown.toHTML(article.content);
+        });
         // 去的这个条件有多少条符合
         articleModel.count(queryObj, function (err, count) {
             if (err) {
+
                 req.flash('error', err);
-                res.redirect('/')
+                res.redirect('/');
+                return
             }
-            //遍历发表的文章，把内容是markdown格式的转换为html格式
-            articles.forEach(function (article) {
-                article.content = markdown.toHTML(article.content);
-            });
             res.render('index', {
                 articles: articles,
                 totalPage: Math.ceil(count / pageSize),
@@ -39,7 +44,6 @@ router.get('/', function (req, res, next) {
                 pageSize: pageSize
             })
         });
-
     });
 });
 
