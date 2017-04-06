@@ -48,7 +48,7 @@ app.use('/articles', articles);
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
-    next(err);
+    res.render(path.join(__dirname, 'views/404.html'));
 });
 
 // error handler

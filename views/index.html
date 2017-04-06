@@ -2,9 +2,7 @@
 <div class="container">
     <ul class="media-list">
         <%
-        for(var i=0;i
-        <articles.length
-        ;i++){
+        for(var i=0;i < articles.length;i++){
         var article = articles[i];
         %>
         <li class="media">
@@ -23,7 +21,12 @@
                 <%
                 }
                 %>
-
+            </div>
+            <div class="media-bottom">
+                作者：<%= article.user.username %>
+                发表时间：<%= article.createAt.toLocaleString() %>
+                阅读：<%= article.pv %> |
+                评论：<%= article.comments.length%>
             </div>
         </li>
         <%

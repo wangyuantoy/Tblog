@@ -1,6 +1,7 @@
 const express = require('express');
 const articleModel = require('../model/article');
 const multer = require('multer');
+const validate = require('../middle/index.js');
 const router = express.Router();
 //指定文件的存储方式
 var storage = multer.diskStorage({
@@ -62,14 +63,18 @@ router.post('/add', upload.single('img'), function (req, res) {
 });
 //文章详情页渲染
 router.get('/detail/:_id', function (req, res) {
-    articleModel.findById(req.params._id, function (err, article) {
-        if (err) {
-            req.flash('error', '获取文章失败');
-            return res.redirect('back')
-        } else {
-            res.render('article/detail', {article: article})
-        }
-    })
+    var _id=req.params._id;
+    articleModel.update({_id:_id},{$inc:{pv:1}},function (err,result) {
+        articleModel.findById(_id).populate('user').populate('comments.user').exec(function (err, article) {
+            if (err) {
+                req.flash('error', '获取文章失败');
+                return res.redirect('back')
+            } else {
+                res.render('article/detail', {article: article})
+            }
+        })
+    });
+
 });
 //删除文章
 router.get('/delete/:_id', function (req, res) {
@@ -93,5 +98,18 @@ router.get('/update/:_id', function (req, res) {
             res.render('article/add', {article: article})
         }
     })
+});
+// 评论路由
+router.post('/comment',validate.checkLogin, function (req, res) {
+    var user = req.session.user;
+    articleModel.update({_id:req.body._id},{$set:{comments:{user:user._id,content:req.body.content}}},function(err,result){
+        if(err){
+            req.flash('error',err);
+            return res.redirect('back');
+        }
+        req.flash('success', '评论成功!');
+        res.redirect('back');
+    });
+
 });
 module.exports = router;

@@ -24,6 +24,7 @@
                 <%
                 if(user){
                     %>
+                <li><a href="javascript:;"><%= user.username%></a></li>
                 <li><a href="/articles/add">发表文章</a></li>
                 <li><a href="/users/logout">退出</a></li>
                 <%
@@ -41,6 +42,7 @@
                 </div>
                 <input type="submit" class="btn  btn-default" value="搜索" name="search">
             </form>
+
         </div>
     </div>
 </nav>
