@@ -22,7 +22,7 @@ database of this project is not deposited in a server, to have good experience y
 >> *quiet=true*
 >> *port=27017*
 
-** cmd.exe start command: mongod --config D:\MongoDB\etc\mongodb.conf**
+**cmd.exe start command: mongod --config D:\MongoDB\etc\mongodb.conf**
 
 
 ### Change Log
