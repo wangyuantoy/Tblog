@@ -6,7 +6,7 @@
 
 ### Start instruction
 
-database of this project is not deposited in a server, to have good experience you've got install [MongoDB](https://www.mongodb.com/download-center?jmp=nav#community)in your pc/laptop, and config like below as default:
+database of this project is not deposited in a server, to have good experience you've got install [MongoDB](https://www.mongodb.com/download-center?jmp=nav#community) in your pc/laptop, and config like below as default:
 
 > install path D:\MongoDB
 
@@ -21,6 +21,9 @@ database of this project is not deposited in a server, to have good experience y
 >> *journal=true*
 >> *quiet=true*
 >> *port=27017*
+
+** cmd.exe start command: mongod --config D:\MongoDB\etc\mongodb.conf**
+
 
 ### Change Log
 
