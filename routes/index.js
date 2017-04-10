@@ -26,6 +26,7 @@ router.get('/', function (req, res, next) {
         }
         //遍历发表的文章，把内容是markdown格式的转换为html格式
         articles.forEach(function (article) {
+            article.title=markdown.toHTML(article.title);
             article.content = markdown.toHTML(article.content);
         });
         // 去的这个条件有多少条符合
