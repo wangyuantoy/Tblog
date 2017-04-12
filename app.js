@@ -5,6 +5,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session'); //会话中间件
+const MongoStore=require('connect-mongo')(session);// session存储到数据库的中间件
 const index = require('./routes/index');
 const users = require('./routes/users');
 const articles = require('./routes/articles');
@@ -16,12 +17,17 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html', require('ejs').renderFile);
 var mongoose=require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017/2017blog')
+mongoose.connect('mongodb://127.0.0.1:27017/2017blog');
 //使用会话中间件后，req增加属性；req.session
 app.use(session({
     secret: '2017blog',
+    key: 'user',//key 的值为 cookie 的名字
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},//设定 cookie 的生存期，这里我们设置 cookie 的生存期为 30 天
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new MongoStore({//设置它的 store 参数为 MongoStore 实例，把会话信息存储到数据库中，以避免重启服务器时会话丢失
+        mongooseConnection: mongoose.connection //使用已有的数据库连接
+    })
 }));
 app.use(flash());
 app.use(favicon(path.join(__dirname, 'public','images', 'favicon.ico')));
