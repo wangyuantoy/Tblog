@@ -57,13 +57,17 @@ router.post('/login', validate.checkNotLogin, function (req, res) {
         if (err) {
             req.flash('error', err);
             res.redirect('back'); //返回到上个页面
+            return
+        }
+        if (!user) {
+            req.flash('error', '登录失败');
+            res.redirect('back'); //返回到上个页面
         } else {
             req.session.user = user;
             req.flash('success', '登录成功');
             res.redirect('/')
         }
     })
-
 });
 
 //退出登录 用户通过get请求/users/logout时执行此
